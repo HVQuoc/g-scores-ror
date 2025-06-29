@@ -8,16 +8,15 @@ class StudentsController < ApplicationController
   end
 
   def report
-    @subjects = Student.column_names - %w[id sbd ma_ngoai_ngu created_at updated_at]
-    @data = {}
-    @subjects.each do |subject|
-      @data[subject] = {
-        ">= 8" => Student.where("#{subject} >= ?", 8).count,
-        "6 - 8" => Student.where("#{subject} >= ? AND #{subject} < ?", 6, 8).count,
-        "4 - 6" => Student.where("#{subject} >= ? AND #{subject} < ?", 4, 6).count,
-        "< 4" => Student.where("#{subject} < ?", 4).count
-      }
-    end
+    @subjects = Student.column_names - %w[id sbd created_at updated_at ma_ngoai_ngu]
+    @selected_subject = params[:subject] || "toan"  # default subject
+
+    @distribution = {
+      ">= 8" => Student.where("#{@selected_subject} >= ?", 8).count,
+      "6 - 8" => Student.where("#{@selected_subject} >= ? AND #{@selected_subject} < ?", 6, 8).count,
+      "4 - 6" => Student.where("#{@selected_subject} >= ? AND #{@selected_subject} < ?", 4, 6).count,
+      "< 4"   => Student.where("#{@selected_subject} < ?", 4).count
+    }
   end
 
   def top10

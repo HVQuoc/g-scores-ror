@@ -1,2 +1,22 @@
-<h1>Students#report</h1>
-<p>Find me in app/views/students/report.html.erb</p>
+<h1 class="text-xl font-bold mb-4">Thống kê theo môn</h1>
+
+<%= form_with url: report_path, method: :get, local: true, class: "mb-4" do %>
+  <label for="subject" class="mr-2 font-semibold">Chọn môn:</label>
+  <%= select_tag :subject, options_for_select(@subjects.map { |s| [s.titleize, s] }, @selected_subject), class: "border p-1" %>
+  <%= submit_tag "Xem", class: "ml-2 bg-blue-600 text-white px-3 py-1 rounded" %>
+<% end %>
+
+<% if @distribution %>
+  <h2 class="text-lg font-semibold mt-6 mb-2">
+    Biểu đồ phân bố điểm: môn <%= subject_label(@selected_subject) %>
+  </h2>
+  <%= column_chart @distribution, height: "400px", library: {
+  title: { text: "Phân loại điểm môn #{subject_label(@selected_subject)}", align: "center" },
+  yAxis: {
+    title: { text: "Số lượng học sinh" }
+  },
+  xAxis: {
+    title: { text: "Mức điểm" }
+  }
+} %>
+<% end %>
