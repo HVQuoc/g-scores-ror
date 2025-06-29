@@ -1,2 +1,29 @@
-<h1>Students#search</h1>
-<p>Find me in app/views/students/search.html.erb</p>
+<h1 class="text-xl font-bold mb-4">Kết quả tra cứu</h1>
+
+<%= form_tag search_path, method: :get, class: "mb-4" do %>
+  <%= label_tag :sbd, "Nhập SBD" %>
+  <%= text_field_tag :sbd, @sbd, class: "border p-1 ml-2", required: true %>
+  <%= submit_tag "Tìm", class: "ml-2 bg-blue-600 text-white px-3 py-1 rounded" %>
+<% end %>
+
+<% if @student %>
+  <p><strong>SBD:</strong> <%= @student.sbd %></p>
+  <table class="mt-4 border w-full text-left">
+    <thead>
+      <tr>
+        <% Student.column_names.reject { |c| %w[id sbd created_at updated_at].include?(c) }.each do |subject| %>
+          <th class="border px-2 py-1"><%= subject.titleize %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <% Student.column_names.reject { |c| %w[id sbd created_at updated_at].include?(c) }.each do |subject| %>
+          <td class="border px-2 py-1"><%= @student[subject] || "-" %></td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+<% elsif @sbd.present? %>
+  <p class="text-red-600">Không tìm thấy học sinh với SBD "<%= @sbd %>"</p>
+<% end %>
