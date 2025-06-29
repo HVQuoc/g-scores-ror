@@ -8,7 +8,8 @@
 
 <% if @student %>
   <p><strong>SBD:</strong> <%= @student.sbd %></p>
-  <table class="mt-4 border w-full text-left">
+  <!-- Desktop Table -->
+  <table class="mt-4 border w-full text-left hidden sm:table">
     <thead>
       <tr>
         <% Student.column_names.reject { |c| %w[id sbd created_at updated_at].include?(c) }.each do |subject| %>
@@ -24,6 +25,15 @@
       </tr>
     </tbody>
   </table>
+  <!-- Mobile Table (vertical key-value) -->
+  <div class="sm:hidden mt-4 space-y-2">
+    <% Student.column_names.reject { |c| %w[id sbd created_at updated_at].include?(c) }.each do |subject| %>
+      <div class="flex border-b border-gray-600 rounded px-2 py-1 items-center">
+        <span class="w-1/2 font-semibold"><%= subject.titleize %></span>
+        <span class="w-1/2 text-right"><%= @student[subject] || "-" %></span>
+      </div>
+    <% end %>
+  </div>
 <% elsif @sbd.present? %>
   <p class="text-red-600">Không tìm thấy học sinh với SBD "<%= @sbd %>"</p>
 <% end %>
