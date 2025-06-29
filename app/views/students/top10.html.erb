@@ -1,2 +1,35 @@
-<h1>Students#top10</h1>
-<p>Find me in app/views/students/top10.html.erb</p>
+<h1 class="text-xl font-bold mb-4">Top 10 học sinh Khối A (Toán, Lý, Hóa)</h1>
+
+<table class="w-full border-collapse border text-left">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="border px-2 py-1">#</th>
+      <th class="border px-2 py-1">SBD</th>
+      <% Student.column_names.reject { |c| %w[id sbd created_at updated_at] }.each do |subject| %>
+        <th class="border px-2 py-1"><%= subject.titleize %></th>
+      <% end %>
+      <th class="border px-2 py-1">Tổng điểm</th>
+      <th class="border px-2 py-1">Chi tiết</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @top_students.each_with_index do |student, i| %>
+      <tr>
+        <td class="border px-2 py-1"><%= i + 1 %></td>
+        <td class="border px-2 py-1 font-semibold"><%= student.sbd %></td>
+        <td class="border px-2 py-1">
+          <div class="text-green-600">
+            <%= student.total_score || "-" %>
+          </div>
+        </td>
+        <td class="border px-2 py-1">
+          <div class="flex flex-col gap-2 text-sm text-gray-500">
+            <span>Toán: <%= student.toan %></span>
+            <span>Vật lý: <%= student.vat_li %></span>
+            <span>Hóa học: <%= student.hoa_hoc %></span>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
