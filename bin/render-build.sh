@@ -10,7 +10,7 @@ chmod +x bin/rails
 
 bundle install
 
-yarn install || npm install
+npm install
 
 # Create missing public/assets folder
 mkdir -p public/assets
