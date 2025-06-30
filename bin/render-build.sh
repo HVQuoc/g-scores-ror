@@ -2,19 +2,18 @@
 
 set -o errexit
 
-# --- Install Node.js (required for Tailwind/CSS bundling) ---
-curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-apt-get install -y nodejs
+# Ensure node is available and yarn is enabled
 corepack enable
 
-# --- Ensure bin/rails is executable ---
+# Ensure bin/rails is executable
 chmod +x bin/rails
+
+bundle install
 
 yarn install || npm install
 
-# --- Create public/assets directory if it doesn't exist ---
+# Create missing public/assets folder
 mkdir -p public/assets
 
-bundle install
 bin/rails assets:precompile
 bin/rails assets:clean
